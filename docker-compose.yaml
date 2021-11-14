@@ -1,0 +1,29 @@
+version: '3'
+services:
+  author:
+    container_name: aem_author
+    build:
+      context: ./
+      dockerfile: aem-author/Dockerfile
+    hostname: 'author'
+    ports:
+      - '4502:4502'
+  publisher:
+    container_name: aem_publisher
+    build:
+      context: ./
+      dockerfile: aem-publisher/Dockerfile
+    hostname: 'publisher'
+    ports:
+      - '4503:4503'
+  dispatcher:
+    container_name: aem_dispatcher
+    build:
+      context: ./aem-dispatcher
+    hostname: 'dispatcher'
+    ports:
+      - '80:80'
+    environment:
+      - DOMAIN=aem.local
+    depends_on:
+      - 'publisher'
